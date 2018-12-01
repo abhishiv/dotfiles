@@ -34,34 +34,38 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
+     auto-completion
+     (haskell :variables haskell-enable-hindent-style "johan-tibell")
      helm
-     (treemacs :variables treemacs-use-filewatch-mode t treemacs-lock-width nil treemacs-use-follow-mode t)
+     (treemacs :variables treemacs-use-filewatch-mode t
+               treemacs-lock-width nil
+               treemacs-use-follow-mode t)
      typescript
-     tmux
+     ;tmux
      lsp
      (javascript :variables javascript-backend 'lsp javascript-fmt-tool 'prettier)
      (json :variables json-fmt-tool 'prettier)
      (typescript :variables
-                 typescript-fmt-on-save t typescript-fmt-tool 'prettier)
-
+                 typescript-fmt-on-save t
+                 typescript-fmt-tool 'prettier)
      ;; auto-completion
      ;; better-defaults
      emacs-lisp
      clojure
-     prettier 
+     twitter
+     spotify
+     prettier
+     search-engine
+     (elfeed :variables rmh-elfeed-org-files (list "~/work/dotfiles/elfeed.org"))
      git
      (html :variables web-fmt-tool 'prettier)
      ;; markdown
      multiple-cursors
      ;;neotree
      (org :variables org-projectile-file "README.org")
-      (shell :variables
-             shell-default-shell 'eshell
+     (shell :variables
+            shell-default-shell 'term
+            shell-default-term-shell "/usr/local/bin/fish"
              shell-default-height 30
              shell-default-position 'bottom)
       spell-checking
@@ -77,7 +81,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(f rainbow-delimiters)
+   dotspacemacs-additional-packages '(f rainbow-delimiters doom-themes)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -199,7 +203,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light spacemacs-dark)
+   dotspacemacs-themes '(doom-one-light leuven spacemacs-dark spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -217,12 +221,12 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 16
+                               :size 18
                                :weight normal
                                :width normal)
 
    ;; The leader key (default "SPC")
-   dotspacemacs-leader-key "SPC"
+   dotspacemacs-leader-key ","
 
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
    ;; (default "SPC")
@@ -237,7 +241,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
-   dotspacemacs-major-mode-leader-key ","
+   dotspacemacs-major-mode-leader-key "SPC"
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
@@ -305,7 +309,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
@@ -359,7 +363,7 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
@@ -471,8 +475,13 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . javascript-mode))
 
   ;;(setq javascript-fmt-tool 'prettier)
-  ;;(setq json-fmt-tool 'prettier)
+  (setq json-fmt-tool 'prettier)
 
+  (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'css-mode-hook 'prettier-js-mode)
+  (add-hook 'json-mode-hook 'prettier-js-mode)
+ 
+  ;jjj(setq-default evil-escape-key-sequence "jj")
 
   (setq-default typescript-indent-level 2 javascript-indent-level 2)
   (setq js-indent-level 2) ; js-mode
@@ -483,12 +492,33 @@ before packages are loaded."
   (setq css-indent-offset 2) ; css-mode
   ;;(setq org-support-shift-select t)
 
-  (add-hook 'org-shiftup-final-hook 'windmove-up)
-  (add-hook 'org-shiftleft-final-hook 'windmove-left)
-  (add-hook 'org-shiftdown-final-hook 'windmove-down)
-  (add-hook 'org-shiftright-final-hook 'windmove-right)
+  ;(add-hook 'org-shiftup-final-hook 'windmove-up)
+  ;(add-hook 'org-shiftleft-final-hook 'windmove-left)
+  ;(add-hook 'org-shiftdown-final-hook 'windmove-down)
+  ;(add-hook 'org-shiftright-final-hook 'windmove-right)
 
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+  ;(spacemacs/set-leader-keys "wl" 'evil-window-left)
+
+
+  ;(global-set-key (kbd "s-up") 'evil-window-left)
+
+  (global-vi-tilde-fringe-mode -1)
+
+  (with-eval-after-load 'org
+    (setq org-support-shift-select t)
+    (setq org-startup-indented t) ; Enable `org-indent-mode' by default
+    (add-hook 'org-mode-hook #'visual-line-mode)
+    (add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((ruby . t)
+       (emacs-lisp . t)
+       (shell . t)
+       (python . t)))
+    )
 
   (with-eval-after-load 'org-agenda
     (require 'org-projectile)
@@ -512,9 +542,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(elfeed-feeds
+   (quote
+    ("https://www.reddit.com/r/altprog.rss" "https://www.reddit.com/r/Compilers.rss" "https://www.reddit.com/r/ProgrammingLanguages.rss" "https://news.ycombinator.com/rss")))
  '(package-selected-packages
    (quote
-    (tabbar xterm-color ws-butler winum which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-evil toc-org tide tern symon string-inflection spaceline-all-the-icons smeargle shell-pop restart-emacs rainbow-delimiters prettier-js popwin persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nameless multi-term move-text magit-svn magit-gitflow macrostep lsp-ui lsp-javascript-typescript lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-ag google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ font-lock+ flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl define-word counsel-projectile column-enforce-mode clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu centered-cursor-mode browse-at-remote auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line)))
+    (doom-themes yasnippet-snippets xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package twittering-mode treemacs-projectile treemacs-evil toc-org tide tagedit tabbar symon string-inflection spotify spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pug-mode prettier-js persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nameless multi-term move-text magit-svn magit-gitflow macrostep lsp-ui lsp-javascript-typescript lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl define-word counsel-projectile company-web company-tern company-statistics company-lsp company-ghci company-cabal column-enforce-mode cmm-mode clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
  '(tabbar-separator (quote (0.5))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
