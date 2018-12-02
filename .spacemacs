@@ -226,7 +226,7 @@ It should only modify the values of Spacemacs settings."
                                :width normal)
 
    ;; The leader key (default "SPC")
-   dotspacemacs-leader-key ","
+   dotspacemacs-leader-key "SPC"
 
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
    ;; (default "SPC")
@@ -241,7 +241,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
-   dotspacemacs-major-mode-leader-key "SPC"
+   dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
@@ -506,12 +506,12 @@ before packages are loaded."
   ;(global-set-key (kbd "s-up") 'evil-window-left)
 
   (global-vi-tilde-fringe-mode -1)
-
+  (setq twittering-display-remaining t)
   (with-eval-after-load 'org
     (setq org-support-shift-select t)
     (setq org-startup-indented t) ; Enable `org-indent-mode' by default
-    (add-hook 'org-mode-hook #'visual-line-mode)
-    (add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode)
+    ;(add-hook 'org-mode-hook #'visual-line-mode)
+    ;(add-hook 'org-mode-hook #'adaptive-wrap-prefix-mode)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((ruby . t)
@@ -542,12 +542,18 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(elfeed-feeds
-   (quote
-    ("https://www.reddit.com/r/altprog.rss" "https://www.reddit.com/r/Compilers.rss" "https://www.reddit.com/r/ProgrammingLanguages.rss" "https://news.ycombinator.com/rss")))
  '(package-selected-packages
    (quote
     (doom-themes yasnippet-snippets xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package twittering-mode treemacs-projectile treemacs-evil toc-org tide tagedit tabbar symon string-inflection spotify spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pug-mode prettier-js persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nameless multi-term move-text magit-svn magit-gitflow macrostep lsp-ui lsp-javascript-typescript lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl define-word counsel-projectile company-web company-tern company-statistics company-lsp company-ghci company-cabal column-enforce-mode cmm-mode clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+ '(safe-local-variable-values
+   (quote
+    ((eval let nil
+           (org-babel-goto-named-src-block "startblock")
+           (org-babel-execute-src-block))
+     (typescript-backend . tide)
+     (typescript-backend . lsp)
+     (javascript-backend . tern)
+     (javascript-backend . lsp))))
  '(tabbar-separator (quote (0.5))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
