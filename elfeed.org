@@ -1,14 +1,13 @@
 * Feeds :elfeed:
-** Computing                                                     :computing:
+** Computing :computing:
 *** [[https://www.reddit.com/r/ProgrammingLanguages.rss][Reddit Programming Languages]]
 *** [[https://www.reddit.com/r/Compilers.rss][Reddit Compilers]]
 *** [[https://www.reddit.com/r/altprog.rss][Reddit Alt Prog]]
 *** [[https://www.reddit.com/r/haskell.rss][Reddit Haskell]]
-** News                                                               :news:
-*** [[https://www.ft.com/news-feed.rss][Financial Times]] :finance:
-*** [[http://aswathdamodaran.blogspot.com/feeds/posts/default][Damodaran Online]]                                              :finance:
+** News :news:
+*** [[http://aswathdamodaran.blogspot.com/feeds/posts/default][Damodaran Online]] :finance:
 *** [[https://medium.com/feed/@nntaleb/][Nassim Nicholas Taleb]] :finance:
-** Dharma :dharma:
+** Indology :dharma:
 *** [[https://koenraadelst.blogspot.com/feeds/posts/default][KOENRAAD ELST]]
 ** Forums    
 ** Work :work:

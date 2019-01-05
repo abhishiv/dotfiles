@@ -33,7 +33,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(yaml
      auto-completion
      (haskell :variables haskell-enable-hindent-style "johan-tibell")
      helm
@@ -43,26 +43,28 @@ This function should only modify configuration layer settings."
      typescript
      ;tmux
      lsp
+     finance
      (javascript :variables javascript-backend 'lsp javascript-fmt-tool 'prettier)
      (json :variables json-fmt-tool 'prettier)
      (typescript :variables
                  typescript-fmt-on-save t
-                 typescript-fmt-tool 'prettier)
+                  typescript-fmt-tool 'prettier)
      ;; auto-completion
      ;; better-defaults
      emacs-lisp
      clojure
      twitter
      spotify
+     (colors :variables colors-colorize-identifiers 'variables)
      prettier
      search-engine
-     (elfeed :variables rmh-elfeed-org-files (list "~/work/dotfiles/elfeed.org"))
+     ;(elfeed :variables rmh-elfeed-org-files (list "~/dotfiles/elfeed.org"))
      git
      (html :variables web-fmt-tool 'prettier)
      ;; markdown
      multiple-cursors
      ;;neotree
-     (org :variables org-projectile-file "README.org")
+     (org)
      (shell :variables
             shell-default-shell 'term
             shell-default-term-shell "/usr/local/bin/fish"
@@ -72,6 +74,14 @@ This function should only modify configuration layer settings."
       syntax-checking
       version-control
       tabbar
+      themes-megapack
+      restclient
+      imenu-list
+      theming
+      github
+      (version-control :variables
+                        version-control-global-margin t)
+      selectric
      )
 
    ;; List of additional packages that will be installed without being
@@ -81,7 +91,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(f rainbow-delimiters doom-themes)
+   dotspacemacs-additional-packages '(f rainbow-delimiters doom-themes eziam-theme mmm-mode flycheck-popup-tip doom-themes idle-highlight-mode highlight-symbol dired-sidebar)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -194,7 +204,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-startup-buffer-responsive t
 
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'org-mode
 
    ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
    ;; (default nil)
@@ -203,7 +213,16 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one-light leuven spacemacs-dark spacemacs-light)
+   dotspacemacs-themes '(
+                         doom-one
+                         gruvbox-dark-hard
+                         doom-nord
+                         monokai
+                         spacemacs-dark
+                         leuven
+                         spacemacs-light
+                         doom-one-light
+                         (ayu-theme :location local))
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -220,6 +239,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
+                                        ;"Ayuthaya"
+                                        ;"Fira Code"
+                                        ;Iosevka
    dotspacemacs-default-font '("Source Code Pro"
                                :size 18
                                :weight normal
@@ -473,6 +495,7 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . javascript-mode))
+  (setq imenu-list-auto-resize nil)
 
   ;;(setq javascript-fmt-tool 'prettier)
   (setq json-fmt-tool 'prettier)
@@ -480,7 +503,19 @@ before packages are loaded."
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (add-hook 'css-mode-hook 'prettier-js-mode)
   (add-hook 'json-mode-hook 'prettier-js-mode)
- 
+  (set-face-attribute 'fixed-pitch nil
+                      :family "Source Code Pro"
+                      :weight 'light
+                      :height 146)
+  (set-face-attribute 'variable-pitch nil
+                      :family "Helvetica"
+                      :weight 'light
+                      :height 146)
+
+
+  ;(setq evil-insert-state-cursor '(box "green")
+  ; evil-normal-state-cursor '(hollow "green"))
+
   ;jjj(setq-default evil-escape-key-sequence "jj")
 
   (setq-default typescript-indent-level 2 javascript-indent-level 2)
@@ -500,13 +535,67 @@ before packages are loaded."
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
+  (evil-set-initial-state 'prog-mode 'insert) ;; enter insert mode to edit a commit message
+  (evil-set-initial-state 'org-mode 'insert) ;; enter insert mode to edit a commit message
+  (evil-set-initial-state 'emacs-lisp-mode 'insert) ;; enter insert mode to edit a commit message
+
   ;(spacemacs/set-leader-keys "wl" 'evil-window-left)
 
 
   ;(global-set-key (kbd "s-up") 'evil-window-left)
 
   (global-vi-tilde-fringe-mode -1)
+  (delete-selection-mode t)
+  (add-to-list 'default-frame-alist
+               '(ns-transparent-titlebar . t))
+
+  ;(add-hook 'focus-in-hook 'evil-insert)
+
+  (setq tide-always-show-documentation t)
+  ;(setq tide-completion-detailed t)
+  (setq tide-completion-enable-autoimport-suggestions t)
+  (setq tide-completion-ignore-case t)
+  (setq tide-format-options nil)
+  (setq tide-sort-completions-by-kind t)
+
+  (add-to-list 'default-frame-alist
+               '(ns-appearance . dark)) ;; or dark - depending on your theme
+
+  (setq theming-modifications '(
+                                (doom-one
+                                 (default :bg "#212733" :fg "#bbc2cf"))))
+
+
   (setq twittering-display-remaining t)
+  (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines nil)))
+  (with-eval-after-load 'compile
+    (require 'compile)
+    (add-to-list 'compilation-error-regexp-alist
+                 '("^\\([^(\n]+\\)(\\([0-9]+\\),\\([0-9]+\\)):" 1 2 3)))
+
+  (add-hook 'flycheck-after-syntax-check-hook
+            (lambda  ()
+              (if flycheck-current-errors
+                  (flycheck-list-errors)
+                (when (get-buffer "*Flycheck errors*")
+                  (switch-to-buffer "*Flycheck errors*")
+                  (kill-buffer (current-buffer))
+                                        ;(delete-window)
+                  ))))
+  (with-eval-after-load 'flycheck
+    (flycheck-define-checker typescript-tsc
+      "A TypeScript syntax checker using tsc command"
+      :command ("flycheck-tsc" (eval buffer-file-name))
+      :error-patterns
+      ((error line-start (file-name) "(" line "," column "): error " (message) line-end))
+      :modes typescript-mode
+      )
+    (add-to-list 'flycheck-checkers 'typescript-tsc)
+    ;(flycheck-add-next-checker 'typescript-tslint 'typescript-tsc 'append)
+    ;(add-to-list 'flycheck-disabled-checkers 'typescript-tslint)
+    ;(flycheck-add-next-checker 'typescript-tslint '(error . typescript-tsc))
+    )
+
   (with-eval-after-load 'org
     (setq org-support-shift-select t)
     (setq org-startup-indented t) ; Enable `org-indent-mode' by default
@@ -519,15 +608,60 @@ before packages are loaded."
        (shell . t)
        (python . t)))
     )
+  (setq projectile-globally-ignored-directories
+        '(".git"))
+
+  (with-eval-after-load 'treemacs
+    (defun treemacs-ignore-gitignore (file _)
+      (string= file ".DS_Store"))
+    (push #'treemacs-ignore-gitignore treemacs-ignored-file-predicates)
+
+    )
+
+  (global-visual-line-mode t)
+  (setq left-fringe-width 0)
+  (setq right-fringe-width 0)
+
+
+
+  ;(setq x-gtk-use-system-tooltips nil)
+  ;(set-face-attribute 'tooltip nil :weight 'bold :family "Source Code Pro")
+  (with-eval-after-load 'color-identifiers-mode
+    (add-to-list
+     'color-identifiers:modes-alist
+     `(typescript-mode . ("[^.][[:space:]]*"
+                          "\\_<\\([a-zA-Z_$]\\(?:\\s_\\|\\sw\\)*\\)"
+                          (nil font-lock-variable-name-face))))
+    )
+  ;(add-hook 'prog-mode-hook #'highlight-symbol-mode)
+  (add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))
 
   (with-eval-after-load 'org-agenda
-    (require 'org-projectile)
-    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    ;(require 'org-projectile)
+    ;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
     )
   (with-eval-after-load 'org
     ;; here goes your Org config :)
     ;; ....
     )
+  (use-package dired-sidebar
+    :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+    :ensure t
+    :commands (dired-sidebar-toggle-sidebar)
+    :init
+    (add-hook 'dired-sidebar-mode-hook
+              (lambda ()
+                (unless (file-remote-p default-directory)
+                  (auto-revert-mode))))
+    :config
+    (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+    (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+    (setq dired-sidebar-subtree-line-prefix "__")
+    (setq dired-sidebar-theme 'vscode)
+    (setq dired-sidebar-use-term-integration t)
+    (setq dired-sidebar-use-custom-font t))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -544,7 +678,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (doom-themes yasnippet-snippets xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package twittering-mode treemacs-projectile treemacs-evil toc-org tide tagedit tabbar symon string-inflection spotify spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pug-mode prettier-js persp-mode pcre2el password-generator paradox overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file nameless multi-term move-text magit-svn magit-gitflow macrostep lsp-ui lsp-javascript-typescript lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl define-word counsel-projectile company-web company-tern company-statistics company-lsp company-ghci company-cabal column-enforce-mode cmm-mode clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+    (dired-sidebar dired-subtree dired-hacks-utils idle-highlight-mode highlight-symbol zenburn-theme zen-and-art-theme yasnippet-snippets yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twittering-mode twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-evil toxi-theme toc-org tide tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit tabbar symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection spotify spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme selectric-mode scss-mode sass-mode reverse-theme restclient-helm restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme prettier-js planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http noctilux-theme naquadah-theme nameless mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme majapahit-theme magithub magit-svn magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lsp-ui lsp-javascript-typescript lorem-ipsum livid-mode link-hint light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-spotify-plus helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-popup-tip flycheck-ledger flycheck-haskell flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-ledger evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies editorconfig dumb-jump dracula-theme dotenv-mode doom-themes doom-modeline django-theme diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile company-web company-tern company-statistics company-restclient company-lsp company-ghci company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode cmm-mode clues-theme clojure-snippets clojure-cheatsheet clean-aindent-mode cider-eval-sexp-fu cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((eval let nil
