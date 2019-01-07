@@ -213,16 +213,14 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(
+   dotspacemacs-themes '(spacemacs-dark
                          doom-one
                          gruvbox-dark-hard
                          doom-nord
                          monokai
-                         spacemacs-dark
                          leuven
                          spacemacs-light
-                         doom-one-light
-                         (ayu-theme :location local))
+                         doom-one-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -243,7 +241,7 @@ It should only modify the values of Spacemacs settings."
                                         ;"Fira Code"
                                         ;Iosevka
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 18
+                               :size 19
                                :weight normal
                                :width normal)
 
@@ -478,6 +476,21 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (custom-set-variables '(spacemacs-theme-custom-colors
+                          '((bg1 . "#0F1419")
+                            (bg2 . "#0b0e12")
+                            (bg3 . "#080a0d")
+                            (bg4 . "#050709")
+                            (keyword . "#FF7733")
+                            (func . "#3E93DD")
+                            (type . "#3E93DD")
+                            (const . "#3E93DD")
+                            (str . "#BFD949")
+                            (cblk-bg . "#0F1419")
+                            (highlight . "#16242E")
+
+                            )))
+
   )
 
 (defun dotspacemacs/user-load ()
@@ -503,6 +516,7 @@ before packages are loaded."
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (add-hook 'css-mode-hook 'prettier-js-mode)
   (add-hook 'json-mode-hook 'prettier-js-mode)
+  ;(setq 'tabbar-use-images nil)
   (set-face-attribute 'fixed-pitch nil
                       :family "Source Code Pro"
                       :weight 'light
@@ -511,6 +525,49 @@ before packages are loaded."
                       :family "Helvetica"
                       :weight 'light
                       :height 146)
+  (set-face-attribute
+   'tabbar-default nil
+   :family "Source Code Pro"
+   :weight 'bold
+   :height 160
+   :slant 'normal
+   :background "#080a0d"
+   :foreground "#f1f1f1"
+   :box '(:line-width 1 :color "#080a0d" :style 'released-button))
+  (set-face-attribute
+   'tabbar-unselected nil
+   :family "Source Code Pro"
+   :weight 'bold
+   :height 160
+   :slant 'normal
+   :background "#080a0d"
+   :foreground "white"
+   :box '(:line-width 5 :color "#080a0d" :style 'released-button))
+  (set-face-attribute
+   'tabbar-selected nil
+   :family "Source Code Pro"
+   :weight 'bold
+   :height 160
+   :slant 'normal
+   :background "#FF7733"
+   :foreground "#0F1419"
+   :box '(:line-width 5 :color "#FF7733" :style 'pressed-button))
+  (set-face-attribute
+   'tabbar-highlight nil
+   :family "Source Code Pro"
+   :weight 'bold
+   :height 160
+   :slant 'normal
+  )
+  (set-face-attribute
+   'tabbar-button nil
+   :slant 'normal
+   :box '(:line-width 1 :color "#080a0d" :style nil))
+  (set-face-attribute
+   'tabbar-separator nil
+   :slant 'normal
+   :background "#080a0d"
+   :height 0.6)
 
 
   ;(setq evil-insert-state-cursor '(box "green")
@@ -561,10 +618,21 @@ before packages are loaded."
   (add-to-list 'default-frame-alist
                '(ns-appearance . dark)) ;; or dark - depending on your theme
 
-  (setq theming-modifications '(
-                                (doom-one
-                                 (default :bg "#212733" :fg "#bbc2cf"))))
+  ;(setq theming-modifications '((spacemacs-dark (default :background "#0F1419"))))
 
+  ;(custom-set-variables '(spacemacs-theme-custom-colors '((bg1 . "#0f1419"))))
+
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(treemacs-directory-face ((t (:foreground "#cccccc" :weight bold :height 160 :width normal))))
+   '(treemacs-file-face ((t (:foreground "#cccccc" :height 160 :width normal ))))
+   )
+  (setq treemacs-indentation 1 )
+  ;(setq treemacs-position "right")
+  (set-face-bold-p 'bold nil)
 
   (setq twittering-display-remaining t)
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines nil)))
