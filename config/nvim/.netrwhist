@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/Users/abhishiv/work/gratico/grati.co'
+let g:netrw_dirhist_4='/Users/abhishiv/work/gratico/grati.co/packages/code/src'
+let g:netrw_dirhist_3='/Users/abhishiv/work/gratico/grati.co/packages/code'
+let g:netrw_dirhist_2='/Users/abhishiv/work/gratico/grati.co/packages'
+let g:netrw_dirhist_1='/Users/abhishiv/work/gratico/grati.co'
