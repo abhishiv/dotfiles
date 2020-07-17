@@ -1,5 +1,6 @@
 .PHONY: dependencies
 dependencies:
+	brew install neovim
 	pip3 install neovim
 	npm install -g neovim
 	npm install -g spaceship-prompt
