@@ -69,14 +69,36 @@ Plug 'othree/yajs.vim'
 " File explorer
 Plug 'scrooloose/nerdtree'
 Plug 'bagrat/vim-buffet'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler.vim'
+Plug 'romainl/vim-qf'
 
 " Customized vim status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'mhinz/vim-startify'
+
+Plug 'ctrlpvim/ctrlp.vim'
+
+Plug 'liuchengxu/vim-which-key'
+Plug 'Shougo/deol.nvim'
+Plug 'wincent/terminus'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'voldikss/vim-floaterm'
+Plug 'romainl/vim-qf'
 " Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'liuchengxu/vista.vim'
+:
+Plug 'morhetz/gruvbox'
+
+Plug 'inkarkat/vim-SyntaxRange'
+Plug 'chrisbra/NrrwRgn'
+Plug 'jceb/vim-orgmode'
+
 
 Plug 'ayu-theme/ayu-vim' " or other package manager
 " Initialize plugin system
